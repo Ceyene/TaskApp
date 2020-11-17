@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import TaskBanner from "./components/TaskBanner";
+import TaskRow from "./components/TaskRow";
 
 function App() {
+  //guardo quien es el propietario de las tareas y las tareas
+  const [userName, setUserName] = useState("Cyn");
+  const [taskItems, setTaskItems] = useState([
+    { name: "Tarea Uno", done: false },
+    { name: "Tarea Dos", done: false },
+    { name: "Tarea Tres", done: true },
+  ]);
+
+  //modifica el estado de las tareas
+  const toggleTask = (task) =>
+    setTaskItems(
+      taskItems.map((t) => (t.name === task.name ? { ...t, done: !t.done } : t))
+    );
+
+  //renderiza una fila de la tabla por tarea
+  const TaskTableRows = () =>
+    taskItems.map((task) => (
+      <TaskRow task={task} key={task.name} toggleTask={toggleTask} />
+    ));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <TaskBanner userName={userName} taskItems={taskItems} />
+      <table className="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <TaskTableRows />
+        </tbody>
+      </table>
     </div>
   );
 }
