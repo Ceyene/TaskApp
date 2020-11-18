@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TaskBanner from "./components/TaskBanner";
 import TaskCreator from "./components/TaskCreator";
 import TaskRow from "./components/TaskRow";
@@ -17,6 +17,31 @@ function App() {
   //guardo en otro estado la validación
   //para mostrar otra tabla con las tareas cumplidas
   const [showCompleted, setShowCompleted] = useState(true);
+
+  //apenas renderice la app, LocalStorage comprobará si hay tareas guardadas
+  //de haber: definir tareas guardadas
+  //de no haber nada: dar datos de ejemplo
+  useEffect(() => {
+    let data = localStorage.getItem("tasks");
+    if (data != null) {
+      setTaskItems(JSON.parse(data));
+    } else {
+      setUserName("Invitado"); //nombre usuario por defecto
+      setTaskItems([
+        { name: "Añade una tarea al listado", done: false },
+        { name: "Te será muy útil", done: false },
+        { name: "Prueba esta app", done: true },
+      ]); //tareas de ejemplo
+      setShowCompleted(true); //se muestra todo por defecto
+    }
+  }, []); //solo se realiza una vez, al iniciar la app
+
+  //guardo tareas en el LocalStorage
+  //cada vez que el TaskItems cambie
+  useEffect(() => {
+    //convierto el array taskItems a string para guardarlo en tasks
+    localStorage.setItem("tasks", JSON.stringify(taskItems));
+  }, [taskItems]);
 
   //modifica el estado de las tareas
   const toggleTask = (task) =>
