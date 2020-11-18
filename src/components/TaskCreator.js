@@ -18,6 +18,7 @@ const TaskCreator = (props) => {
       <input
         type="text"
         className="form-control"
+        placeholder="Escribe la tarea que quieras agregar al listado"
         value={newTaskName}
         onChange={updateNewTaskValue}
       />
