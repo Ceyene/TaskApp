@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+//creación de una nueva tarea
 const TaskCreator = (props) => {
   //estado del input para crear nueva tarea
   const [newTaskName, setNewTaskName] = useState("");

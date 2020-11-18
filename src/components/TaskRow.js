@@ -1,5 +1,6 @@
 import React from "react";
 
+//renderizo tarea individualmente
 const TaskRow = (props) => (
   <tr key={props.task.name}>
     <td>{props.task.name}</td>
