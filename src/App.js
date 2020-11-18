@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TaskBanner from "./components/TaskBanner";
 import TaskCreator from "./components/TaskCreator";
 import TaskRow from "./components/TaskRow";
+import VisibilityControl from "./components/VisibilityControl";
 
 function App() {
   //guardo en un estado quien es el propietario de las tareas
@@ -13,6 +14,9 @@ function App() {
     { name: "Tarea Dos", done: false },
     { name: "Tarea Tres", done: true },
   ]);
+  //guardo en otro estado la clasificación de tareas
+  //para utilizarla en otra tabla con las tareas cumplidas
+  const [showCompleted, setShowCompleted] = useState(true);
 
   //modifica el estado de las tareas
   const toggleTask = (task) =>
@@ -37,18 +41,36 @@ function App() {
   return (
     <div>
       <TaskBanner userName={userName} taskItems={taskItems} />
-      <TaskCreator createNew={createNew} />
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Descripción</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TaskTableRows />
-        </tbody>
-      </table>
+      <div className="container-fluid text-center">
+        <TaskCreator createNew={createNew} />
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>{TaskTableRows()}</tbody>
+        </table>
+        <div className="bg-secondary-text-white text-center p-2">
+          <VisibilityControl
+            description="tareas cumplidas"
+            isChecked={showCompleted}
+            callback={(checked) => setShowCompleted(checked)}
+          />
+        </div>
+        {showCompleted && (
+          <table className="table table-stripped table-bordered">
+            <thead>
+              <tr>
+                <th>Descripción</th>
+                <th>Realizada</th>
+              </tr>
+            </thead>
+            <tbody>{TaskTableRows()}</tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }

@@ -14,7 +14,7 @@ const TaskCreator = (props) => {
   };
 
   return (
-    <div className="my-1">
+    <div className="input-group mb-3">
       <input
         type="text"
         className="form-control"
@@ -22,9 +22,11 @@ const TaskCreator = (props) => {
         value={newTaskName}
         onChange={updateNewTaskValue}
       />
-      <button className="btn btn-primary mt-1" onClick={createNewTask}>
-        Agregar
-      </button>
+      <div className="input-group-append">
+        <button className="btn btn-primary" onClick={createNewTask}>
+          Agregar
+        </button>
+      </div>
     </div>
   );
 };
