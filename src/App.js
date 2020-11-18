@@ -14,26 +14,32 @@ function App() {
     { name: "Tarea Dos", done: false },
     { name: "Tarea Tres", done: true },
   ]);
-  //guardo en otro estado la clasificación de tareas
-  //para utilizarla en otra tabla con las tareas cumplidas
+  //guardo en otro estado la validación
+  //para mostrar otra tabla con las tareas cumplidas
   const [showCompleted, setShowCompleted] = useState(true);
 
   //modifica el estado de las tareas
   const toggleTask = (task) =>
     setTaskItems(
+      //solo se le modifica a la tarea que coincida con la solicitada
       taskItems.map((t) => (t.name === task.name ? { ...t, done: !t.done } : t))
     );
 
-  //renderiza una fila de la tabla por tarea
-  const TaskTableRows = () =>
-    taskItems.map((task) => (
-      <TaskRow task={task} key={task.name} toggleTask={toggleTask} />
-    ));
+  //renderiza una fila de la tabla por tarea según estado
+  const TaskTableRows = (doneValue) =>
+    taskItems
+      //primero se filtra el estado de la tarea
+      .filter((task) => task.done === doneValue)
+      //se renderizan solo las tareas del estado solicitado
+      .map((task) => (
+        <TaskRow task={task} key={task.name} toggleTask={toggleTask} />
+      ));
 
   //crear nueva tarea
   const createNew = (taskName) => {
     //compruebo que la tarea no sea una ya existente
     if (!taskItems.find((t) => t.name === taskName)) {
+      //nueva tarea con estado de incumplida por defecto
       setTaskItems([...taskItems, { name: taskName, done: false }]);
     }
   };
@@ -50,7 +56,7 @@ function App() {
               <th>Estado</th>
             </tr>
           </thead>
-          <tbody>{TaskTableRows()}</tbody>
+          <tbody>{TaskTableRows(false)}</tbody>
         </table>
         <div className="bg-secondary-text-white text-center p-2">
           <VisibilityControl
@@ -67,7 +73,7 @@ function App() {
                 <th>Realizada</th>
               </tr>
             </thead>
-            <tbody>{TaskTableRows()}</tbody>
+            <tbody>{TaskTableRows(true)}</tbody>
           </table>
         )}
       </div>
